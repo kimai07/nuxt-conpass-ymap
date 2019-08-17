@@ -14,6 +14,7 @@
     </div>
     <div class="event-container">
       <div class="event-sidebar">
+        <p>総ヒット件数: {{eventHitCount}}件</p>
         <div v-if="eventDatas.length != 0">
           <div v-for="(eventData,index) in eventDatas" :key="eventData.id">
             <div v-on:click="select($event, index)">
@@ -48,6 +49,7 @@ export default {
   data() {
     return {
       keyword: "",
+      eventHitCount: 0,
       eventDatas: [],
       message: "",
       ymap: null,
@@ -72,13 +74,19 @@ export default {
       if (!this.canMessageSubmit) {
         return;
       }
+      this.eventHitCount = 0;
+      this.eventDatas = [];
+      this.ymap.clearFeatures();
+      this.canMessageSubmit = false;
+
       axios
         .get(url + this.keyword)
         .then(res => {
-          if (res.data.events == null) {
+          if (res.data.results_returned == 0) {
             this.message = "no data";
             return;
           }
+          this.eventHitCount = res.data.results_available;
           this.eventDatas = res.data.events;
           this.plotEventsOnMap();
         })
@@ -86,11 +94,8 @@ export default {
           this.message = "error";
           console.log(error);
         });
-      this.canMessageSubmit = false;
     },
     focus() {
-      this.zipcode = "";
-      this.eventData = {};
       this.message = "";
     },
     plotEventsOnMap() {
