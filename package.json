@@ -16,7 +16,7 @@
     "@nuxtjs/dotenv": "^1.4.1",
     "axios": "^0.21.1",
     "cross-env": "^5.2.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "nuxt": "^2.12.2",
     "vue-property-decorator": "^8.4.1",
     "yahoo-map-loader": "^1.0.3"
